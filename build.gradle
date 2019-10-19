@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+    id 'jacoco'
+}
+
+group 'de.uni_passau.fim.se2'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    implementation group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+    implementation group: 'org.ow2.asm', name: 'asm', version: '7.2'
+    implementation group: 'org.ow2.asm', name: 'asm-commons', version: '7.2'
+    implementation group: 'org.ow2.asm', name: 'asm-util', version: '7.2'
+    implementation group: 'org.ow2.asm', name: 'asm-tree', version: '7.2'
+    implementation group: 'org.ow2.asm', name: 'asm-analysis', version: '7.2'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.27.0'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '2.27.0'
+    testImplementation group: "org.powermock", name: "powermock-api-mockito2", version: "2.0.2"
+
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
+}
+
+jacoco {
+    toolVersion = "0.8.4"
+    reportsDir = file("${buildDir}/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        csv.enabled = true
+        csv.setDestination(file("${buildDir}/jacoco/csv"))
+        html.enabled = true
+        html.setDestination(file("${buildDir}/jacoco/html"))
+        xml.enabled = false
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    jacoco {
+        enabled = true
+    }
+    finalizedBy jacocoTestReport
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+eclipse {
+    classpath {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
