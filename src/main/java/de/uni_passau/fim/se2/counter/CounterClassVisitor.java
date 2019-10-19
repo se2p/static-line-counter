@@ -1,8 +1,8 @@
 package de.uni_passau.fim.se2.counter;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
@@ -13,8 +13,8 @@ public class CounterClassVisitor extends ClassVisitor {
 
   public CounterClassVisitor(final int pAPI) {
     super(pAPI);
-    linesPerMethod = new HashMap<>();
-    lineNumbersPerMethod = new HashMap<>();
+    linesPerMethod = new TreeMap<>();
+    lineNumbersPerMethod = new TreeMap<>();
   }
 
   @Override
