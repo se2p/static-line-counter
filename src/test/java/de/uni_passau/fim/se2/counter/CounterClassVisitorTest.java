@@ -3,7 +3,7 @@ package de.uni_passau.fim.se2.counter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ASM7;
+import static org.objectweb.asm.Opcodes.ASM9;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -19,7 +19,7 @@ class CounterClassVisitorTest {
 
   @BeforeEach
   void setup() {
-    ccv = new CounterClassVisitor(ASM7);
+    ccv = new CounterClassVisitor(ASM9);
   }
 
   @Test

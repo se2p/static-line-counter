@@ -1,8 +1,8 @@
 package de.uni_passau.fim.se2.counter;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
@@ -13,8 +13,8 @@ public class CounterClassVisitor extends ClassVisitor {
 
   public CounterClassVisitor(final int pAPI) {
     super(pAPI);
-    linesPerMethod = new TreeMap<>();
-    lineNumbersPerMethod = new TreeMap<>();
+    linesPerMethod = new LinkedHashMap<>();
+    lineNumbersPerMethod = new LinkedHashMap<>();
   }
 
   @Override
@@ -29,19 +29,19 @@ public class CounterClassVisitor extends ClassVisitor {
     return new CounterMethodVisitor(api, mv, this, pName, pDescriptor);
   }
 
-  void setLinesPerMethod(final String pMethodName, final int pLineCount) {
-    linesPerMethod.put(pMethodName, pLineCount);
-  }
-
-  void setLineNumbersPerMethod(final String pMethodName, final Set<Integer> pLineNumbers) {
-    lineNumbersPerMethod.put(pMethodName, pLineNumbers);
-  }
-
   public Map<String, Integer> getLinesPerMethod() {
     return linesPerMethod;
   }
 
   public Map<String, Set<Integer>> getLineNumbersPerMethod() {
     return lineNumbersPerMethod;
+  }
+
+  void setLinesPerMethod(final String pMethodName, final int pLineCount) {
+    linesPerMethod.put(pMethodName, pLineCount);
+  }
+
+  void setLineNumbersPerMethod(final String pMethodName, final Set<Integer> pLineNumbers) {
+    lineNumbersPerMethod.put(pMethodName, pLineNumbers);
   }
 }

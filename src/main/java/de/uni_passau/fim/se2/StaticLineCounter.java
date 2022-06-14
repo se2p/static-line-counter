@@ -1,11 +1,10 @@
 package de.uni_passau.fim.se2;
 
-import static org.objectweb.asm.Opcodes.ASM7;
+import static org.objectweb.asm.Opcodes.ASM9;
 
 import de.uni_passau.fim.se2.counter.CounterClassVisitor;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -22,24 +21,25 @@ public class StaticLineCounter {
 
   private void extractInformation(final String pClassName) throws IOException {
     final ClassReader cr = new ClassReader(pClassName);
-    final CounterClassVisitor ccv = new CounterClassVisitor(ASM7);
-    cr.accept(ccv, ClassReader.EXPAND_FRAMES);
+    final CounterClassVisitor visitor = new CounterClassVisitor(ASM9);
+    cr.accept(visitor, ClassReader.EXPAND_FRAMES);
 
-    final Map<String, Integer> linesPerMethod = ccv.getLinesPerMethod();
-    final Map<String, Set<Integer>> linesNumbersPerMethod = ccv.getLineNumbersPerMethod();
+    final Map<String, Integer> linesPerMethod = visitor.getLinesPerMethod();
+    final Map<String, Set<Integer>> lineNumbersPerMethod = visitor.getLineNumbersPerMethod();
 
-    for (Entry<String, Integer> method : linesPerMethod.entrySet()) {
+    for (Map.Entry<String, Integer> method : linesPerMethod.entrySet()) {
       System.out.printf("Information for method %s\n", method.getKey());
       System.out.printf("    Line count: %d\n", method.getValue());
       System.out.printf(
-          "    Line numbers in method: %s\n\n", linesNumbersPerMethod.get(method.getKey()));
+          "    Line numbers in method: %s\n\n", lineNumbersPerMethod.get(method.getKey()));
     }
   }
 
-  private String parseArguments(String[] pArgs) {
+  private String parseArguments(final String[] pArgs) {
     final Options options = new Options();
 
-    final Option classNameOption = new Option("c", "className", true, "Full-qualified name of class to analyse");
+    final Option classNameOption =
+        new Option("c", "className", true, "Full-qualified name of class to analyse");
     classNameOption.setRequired(true);
     options.addOption(classNameOption);
 
